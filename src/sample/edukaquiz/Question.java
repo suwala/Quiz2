@@ -17,21 +17,22 @@ import android.widget.TextView;
 
 public class Question extends Activity{
 
-    public boolean q = true;	//‰æ–Êó‘Ô‚Ìƒtƒ‰ƒO@true‚¾‚Æ–â‘è‚ªfalse‚¾‚ÆŒ‹‰Ê‚ª•\¦‚³‚ê‚Ä‚¢‚é
-    public Integer questions,q_Index=0;    //DB‚É“o˜^‚³‚ê‚Ä‚¢‚é‘–â‘è”‚ÌƒJƒEƒ“ƒg@DB‚Ìƒƒ\ƒbƒh‚Å‰ğŒˆ‚Å‚«‚éH q_Index = Œ»İ‚ª“ï–â–Ú‚©‚Ì•Û
+    public boolean q = true;	//ç”»é¢çŠ¶æ…‹ã®ãƒ•ãƒ©ã‚°ã€€trueã ã¨å•é¡ŒãŒfalseã ã¨çµæœãŒè¡¨ç¤ºã•ã‚Œã¦ã„ã‚‹
+    public Integer questions,q_Index=0;    //DBã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ç·å•é¡Œæ•°ã®ã‚«ã‚¦ãƒ³ãƒˆã€€DBã®ãƒ¡ã‚½ãƒƒãƒ‰ã§è§£æ±ºã§ãã‚‹ï¼Ÿ q_Index = ç¾åœ¨ãŒé›£å•ç›®ã‹ã®ä¿æŒ
     
     
-    public final Integer syutudai = 3; //o‘è”
+    public final Integer syutudai = 3; //å‡ºé¡Œæ•°
     
-    public  Integer[] order;//DB‚ÌIndex€‹’‚É‚µ‚½–â‘è‚Ìo‘è‡@‘–â‘è”‚ğƒVƒƒƒbƒtƒ‹‚·‚é
+    public  Integer[] order;//DBã®Indexæº–æ‹ ã«ã—ãŸå•é¡Œã®å‡ºé¡Œé †ã€€ç·å•é¡Œæ•°ã‚’ã‚·ãƒ£ãƒƒãƒ•ãƒ«ã™ã‚‹
     public String answer;
     
-    static Integer a_c; //³‰ğ”‚ÌƒJƒEƒ“ƒg
+    static Integer a_c,miss,point; //æ­£è§£æ•°ã®ã‚«ã‚¦ãƒ³ãƒˆ
     public String mondai; 
     
     private Handler timerHandler = new Handler();
     private Handler deleteHandler = new Handler();
     private long start;
+    private final int pbTime = 10000;//ProgressBarã®è¨­å®šã‚¿ã‚¤ãƒ 
     	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,35 +44,35 @@ public class Question extends Activity{
         SQLiteDatabase db = dbh.getReadableDatabase();
         String sql = "SELECT COUNT(*) from "+DBHelper.getTableName();
         
-        //rawQuery‚Í¶‚ÌSQL•¶‚ğg‚¦‚é@ŠÈ’PI
+        //rawQueryã¯ç”Ÿã®SQLæ–‡ã‚’ä½¿ãˆã‚‹ã€€ç°¡å˜ï¼
         Cursor cursor = db.rawQuery(sql,null);
         
-        //cursor‚Ì©“®ƒNƒ[ƒYƒ‚[ƒhHƒJƒ‰ƒ€index‚ğŒ³‚É‘S–â‘è”‚ğƒQƒbƒg *‚Ìê‡‚ÌƒJƒ‰ƒ€–¼‚ª•s–¾
+        //cursorã®è‡ªå‹•ã‚¯ãƒ­ãƒ¼ã‚ºãƒ¢ãƒ¼ãƒ‰ï¼Ÿã‚«ãƒ©ãƒ indexã‚’å…ƒã«å…¨å•é¡Œæ•°ã‚’ã‚²ãƒƒãƒˆ *ã®å ´åˆã®ã‚«ãƒ©ãƒ åãŒä¸æ˜
         this.startManagingCursor(cursor);
         //Integer index  = cursor.getColumnIndex("*");
         cursor.moveToFirst();
         this.questions = cursor.getInt(0);
         
-        Log.d("oncre",String.valueOf(this.questions));//‘–â‘è”‚Ìˆê’vŠm”F
+        Log.d("oncre",String.valueOf(this.questions));//ç·å•é¡Œæ•°ã®ä¸€è‡´ç¢ºèª
         dbh.close();
         
         this.order= new Integer[questions];
-        //o‘è‡‚ÌŒˆ’è
+        //å‡ºé¡Œé †ã®æ±ºå®š
         this.setOrder();
         
         this.question();
         
-        //Œo‰ßŠÔ‚Ìİ’è@Œ»İMAX5•b
+        //çµŒéæ™‚é–“ã®è¨­å®šã€€ç¾åœ¨MAX5ç§’
         ProgressBar pb = (ProgressBar)this.findViewById(R.id.progressBar1);
-        pb.setMax(5000);
+        pb.setMax(this.pbTime);
         
-        a_c = 0;
+        a_c = miss = point = 0;
     }
 	
 	private Runnable CallbackTimer = new Runnable() {
 		
 		public void run() {
-			// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ãƒ»ã‚¹ã‚¿ãƒ–
 			timerHandler.postDelayed(this, 10);
 			
 			TextView tv = (TextView)findViewById(R.id.quetions);
@@ -88,19 +89,19 @@ public class Question extends Activity{
 	
 	private Runnable CallbackDelete = new Runnable() {
         public void run() {
-            /* ƒR[ƒ‹ƒoƒbƒN‚ğíœ‚µ‚ÄüŠúˆ—‚ğ’â~ */
+            /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‰Šé™¤ã—ã¦å‘¨æœŸå‡¦ç†ã‚’åœæ­¢ */
             timerHandler.removeCallbacks(CallbackTimer);
         }
     };
 
 	
-	//order[Œ»İ‚Ì–â‘è”]‚ÉŠî‚Ã‚¢‚Ä–â‘è‚ğæ“¾@“š‚¦‚Ì‚İanswer‚ÉŠi”[
+	//order[ç¾åœ¨ã®å•é¡Œæ•°]ã«åŸºã¥ã„ã¦å•é¡Œã‚’å–å¾—ã€€ç­”ãˆã®ã¿answerã«æ ¼ç´
 	 public void question(){
 		 
 		 if(this.q_Index < this.syutudai){	
 			 
 
-			 //ƒnƒ}ƒŠ@c.move‚ÍƒIƒtƒZƒbƒgŒ»İ’n‚©‚ç‚ÌˆÚ“®‚Ì‚½‚ßtoFirst‚ÅÅ‰‚Ì’n“_‚Ö–ß‚·•K—v‚ª‚ ‚Á‚½
+			 //ãƒãƒãƒªã€€c.moveã¯ã‚ªãƒ•ã‚»ãƒƒãƒˆç¾åœ¨åœ°ã‹ã‚‰ã®ç§»å‹•ã®ãŸã‚toFirstã§æœ€åˆã®åœ°ç‚¹ã¸æˆ»ã™å¿…è¦ãŒã‚ã£ãŸ
 
 			 DBHelper dbh = new DBHelper(this);
 			 SQLiteDatabase db = dbh.getReadableDatabase();
@@ -112,7 +113,7 @@ public class Question extends Activity{
 			 Log.d("question",String.valueOf(this.q_Index));
 			 boolean isEof = c.moveToFirst();
 			 if(isEof){
-				 //–â‘è‚Ìæ“¾
+				 //å•é¡Œã®å–å¾—
 				 clmIndex = c.getColumnIndex("question");
 				 c.move(this.order[this.q_Index]);
 				 Log.d("question",String.valueOf(this.order[this.q_Index]));
@@ -133,7 +134,7 @@ public class Question extends Activity{
 			 }
 			 dbh.close();
 			 
-			 //start‚ÉŒ»İ‚ğƒZƒbƒg‚µ@Handler‚ğì“®‚³‚¹Œo‰ßŠÔ‚ğ•\¦‚³‚¹‚é
+			 //startã«ç¾åœ¨æ™‚åˆ»ã‚’ã‚»ãƒƒãƒˆã—ã€€Handlerã‚’ä½œå‹•ã•ã›çµŒéæ™‚é–“ã‚’è¡¨ç¤ºã•ã›ã‚‹
 			 this.start = System.currentTimeMillis();
 			 this.timerHandler.postDelayed(CallbackTimer, 100);
 			 
@@ -150,16 +151,16 @@ public class Question extends Activity{
 	public void answer(View view){
 		
 		
-		//q‚ªtrue‚Ì‚Í–â‘èAfalse‚Ì‚Í‰ñ“š‚ª•\¦‚³‚ê‚Ä‚é@‚Æ‚¢‚¤‚±‚Æ‚É‚µ‚æ‚¤
-		//–â‘è•\¦‚Ì‚Í‰ñ“š‚ÌÁ‹@‰ñ“š•\¦‚Ì‚Í–â‘è‚Ì•\¦‚Ì2•ªŠò
+		//qãŒtrueã®æ™‚ã¯å•é¡Œã€falseã®æ™‚ã¯å›ç­”ãŒè¡¨ç¤ºã•ã‚Œã¦ã‚‹ã€€ã¨ã„ã†ã“ã¨ã«ã—ã‚ˆã†
+		//å•é¡Œè¡¨ç¤ºã®æ™‚ã¯å›ç­”ã®æ¶ˆå»ã€€å›ç­”è¡¨ç¤ºã®æ™‚ã¯å•é¡Œã®è¡¨ç¤ºã®2åˆ†å²
 		
 		
 		if(q){
-			//Œo‰ßŠÔ‚ÌƒXƒgƒbƒv
+			//çµŒéæ™‚é–“ã®ã‚¹ãƒˆãƒƒãƒ—
 			this.deleteHandler.postDelayed(CallbackDelete, 0);
 			Button btn = (Button)view;
 			
-			//‰Ÿ‚µ‚½btn‚Ìtext‚ğæ“¾‚µdb‚Ì“š‚¦‚ÆÆ‡@‡”Û‚Å•ªŠò
+			//æŠ¼ã—ãŸbtnã®textã‚’å–å¾—ã—dbã®ç­”ãˆã¨ç…§åˆã€€åˆå¦ã§åˆ†å²
 			if(btn.getText().toString().equals(this.answer)){
 				
 				btn = (Button) findViewById(R.id.button1);
@@ -173,12 +174,16 @@ public class Question extends Activity{
 				
 				btn = (Button)view;
 
-				btn.setText("³‰ğI");
+				btn.setText("æ­£è§£ï¼");
 
+				//1ç§’ã§æ­£è§£ã ã¨9000P 5ç§’ã§æ­£è§£ã ã¨5000PãŒå…¥ã‚‹è¨ˆç®—ã€€ãƒã‚¤ãƒŠã‚¹ã¯åˆ‡ã‚Šä¸Šã’ã¦0ã«ã™ã‚‹
+				if(10000-(int)(System.currentTimeMillis() - this.start) > 0)
+					point += 10000-(int)(System.currentTimeMillis() - this.start);
+				
 				a_c++;
 				q=false;
 			}else{
-				//‘I‘ğˆ‚ğÁ‹
+				//é¸æŠè‚¢ã‚’æ¶ˆå»
 				btn = (Button) findViewById(R.id.button1);
 				btn.setText("");
 				btn = (Button) findViewById(R.id.button2);
@@ -191,8 +196,9 @@ public class Question extends Activity{
 
 				btn = (Button)view;
 
-				btn.setText("c”OI");
+				btn.setText("æ®‹å¿µï¼");
 
+				miss++;
 				q=false;
 			}
 		}else{
@@ -202,9 +208,9 @@ public class Question extends Activity{
 		}
 	}
 
-	//order‚Éo‘è”Ô†‚ğ“ü‚ê‚é@”š‚ª”í‚é‚Æ“¯‚¶–â‘è‚ªo‚Ä‚­‚é“_‚É’ˆÓ
+	//orderã«å‡ºé¡Œç•ªå·ã‚’å…¥ã‚Œã‚‹ã€€æ•°å­—ãŒè¢«ã‚‹ã¨åŒã˜å•é¡ŒãŒå‡ºã¦ãã‚‹ç‚¹ã«æ³¨æ„
 	public void setOrder(){
-		//”z—ñ‚É1`‘–â‘è”‚ğ“ü‚ê‚é
+		//é…åˆ—ã«1ï½ç·å•é¡Œæ•°ã‚’å…¥ã‚Œã‚‹
 		for(int i=0;i<this.questions;i++){
 			this.order[i] = i;
 		}

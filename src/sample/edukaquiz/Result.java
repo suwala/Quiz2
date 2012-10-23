@@ -3,12 +3,18 @@ package sample.edukaquiz;
 import sample.edukaquiz.R;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 public class Result extends Activity{
+	
+	private Handler timerHandler = new Handler();
+	private Handler deleteHandler = new Handler();
+	private long start;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -18,24 +24,54 @@ public class Result extends Activity{
         
         
         
-        //getStringExtra “n‚³‚ê‚½’Ç‰Á•¶š—ñ‚ğó‚¯æ‚é@getStringExtra("keyword") •Ô‚è’l‚ª“n‚µ‚½•¶š—ñ‚Û‚¢
-        //static‚Å‚à‰ğŒˆ‚Å‚«‚é‚±‚Æ‚ª”»–¾‚»‚Á‚ÆŒ©‘—‚é
+        //getStringExtra æ¸¡ã•ã‚ŒãŸè¿½åŠ æ–‡å­—åˆ—ã‚’å—ã‘å–ã‚‹ã€€getStringExtra("keyword") è¿”ã‚Šå€¤ãŒæ¸¡ã—ãŸæ–‡å­—åˆ—ã½ã„
+        //staticã§ã‚‚è§£æ±ºã§ãã‚‹ã“ã¨ãŒåˆ¤æ˜ãã£ã¨è¦‹é€ã‚‹
         
         //String data = i.getStringExtra("a_count");
 
         
         TextView tv = (TextView)findViewById(R.id.textView1);
-        tv.setText("‚ ‚È‚½‚Ì³‰ğ”‚Í"+Question.a_c.toString()+"‚Å‚·I");
+        tv.setText(Question.point.toString()+"POINTç²å¾—ï¼\nã‚ãªãŸã®æ­£è§£æ•°ã¯"+Question.a_c.toString()+"å•ã§ã™ï¼\né–“é•ã£ãŸå›æ•°ã¯"+Question.miss.toString()+"å•ã§ã™");
+        this.start = System.currentTimeMillis();
+        this.timerHandler.postDelayed(CallbackTimer, 0);
+        
         
     }
 	
+	private Runnable CallbackTimer = new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO è‡ªå‹•ç”Ÿæˆã•ã‚ŒãŸãƒ¡ã‚½ãƒƒãƒ‰ãƒ»ã‚¹ã‚¿ãƒ–
+			
+			timerHandler.postDelayed(this,10);
+			
+			TextView tv = (TextView)findViewById(R.id.textView1);
+			int length = (int)(System.currentTimeMillis()-start)/5;
+			if(length >=255){
+				deleteHandler.postDelayed(CallbackDelete, 0);
+				length = 255;
+			}
+			tv.setTextColor(Color.argb(length, 0, 0, 0));
+			
+		}
+	};
+	
+	private Runnable CallbackDelete = new Runnable() {
+        public void run() {
+            /* ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯ã‚’å‰Šé™¤ã—ã¦å‘¨æœŸå‡¦ç†ã‚’åœæ­¢ */
+            timerHandler.removeCallbacks(CallbackTimer);
+        }
+    };
+	
 	public void toTitle(View view){
 		Intent i=new Intent(this,MainActivity.class);
-		//‘JˆÚæ‚ÌƒAƒNƒeƒBƒrƒeƒB‚ª‰Ò“®Ï‚İ‚Ìê‡‚»‚ê‚æ‚èã‚É‚ ‚éƒAƒNƒeƒBƒrƒeƒB‚ğƒLƒ‹‚·‚é
-		//—v‚·‚é‚ÉŒ‹‰Ê‰æ–Ê„ƒoƒbƒNƒL[„–â‘è‚Ì‰æ–Ê‚É–ß‚é‚Ì‚ğ–h‚®
+		//é·ç§»å…ˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ãŒç¨¼å‹•æ¸ˆã¿ã®å ´åˆãã‚Œã‚ˆã‚Šä¸Šã«ã‚ã‚‹ã‚¢ã‚¯ãƒ†ã‚£ãƒ“ãƒ†ã‚£ã‚’ã‚­ãƒ«ã™ã‚‹
+		//è¦ã™ã‚‹ã«çµæœç”»é¢ï¼ãƒãƒƒã‚¯ã‚­ãƒ¼ï¼å•é¡Œã®ç”»é¢ã«æˆ»ã‚‹ã®ã‚’é˜²ã
 		i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-		//—Ç‚­ƒƒJƒ‰ƒ“’²‚×‚é‚±‚Æi.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+		//è‰¯ããƒ¯ã‚«ãƒ©ãƒ³èª¿ã¹ã‚‹ã“ã¨i.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 		this.startActivity(i);
+		this.deleteHandler.postDelayed(CallbackDelete, 0);
 	}
 
 }

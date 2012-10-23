@@ -5,7 +5,7 @@
     <string name="title_activity_main">E-dukaわっさクイズ</string>
     <string name="title">E-dukaわっさクイズ</string>
     <string name="touch">Touch On Start</string>
-    <string name="genre">ジャンルを\n選択して下さい</string>
+    <string name="genre">MenuSelect</string>
     <string name="a_count"></string>
     <string name="return1">タイトルへ戻る</string>
 

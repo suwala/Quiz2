@@ -14,10 +14,10 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	public DBHelper(Context context) {
 		super(context, null, factory, version);
-		// TODO ©“®¶¬‚³‚ê‚½ƒRƒ“ƒXƒgƒ‰ƒNƒ^[EƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½Rï¿½ï¿½ï¿½Xï¿½gï¿½ï¿½ï¿½Nï¿½^ï¿½[ï¿½Eï¿½Xï¿½^ï¿½u
 	}
 
-	//ƒe[ƒuƒ‹–¼‚ğ•Ô‚·ƒƒ\ƒbƒh
+	//ï¿½eï¿½[ï¿½uï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ô‚ï¿½ï¿½ï¿½ï¿½\ï¿½bï¿½h
 	public static  String getTableName(){
 		return tableName;
 	}
@@ -25,9 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
 	
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 		
-		//answer‚É“š‚¦‚ğdummy‚ÉŠÔˆá‚¦‚ğ“ü‚ê‚é@ó‚¯æ‚Á‚½ŒãƒVƒƒƒbƒtƒ‹‚³‚¹‚é@ƒe[ƒuƒ‹–¼‚Ç‚¤‚µ‚æ‚¤@ƒNƒCƒY‚²‚Æ‚É•ª‚¯‚éH
+		//answerã«ç­”ãˆã‚’dummyã«é–“é•ãˆã‚’å…¥ã‚Œã‚‹ã€€å—ã‘å–ã£ãŸå¾Œã‚·ãƒ£ãƒƒãƒ•ãƒ«ã•ã›ã‚‹ã€€ãƒ†ãƒ¼ãƒ–ãƒ«åã©ã†ã—ã‚ˆã†ã€€ã‚¯ã‚¤ã‚ºã”ã¨ã«åˆ†ã‘ã‚‹ï¼Ÿ
 		db.execSQL("create table "+tableName+" ("+
 				" question text not null,"+
 				" answer text not null,"+
@@ -37,15 +37,13 @@ public class DBHelper extends SQLiteOpenHelper {
 				");"
 			);
 		
-		
-		//execsql(–â‘è,“š‚¦,ƒ_ƒ~[*3)‚ğ“n‚·@“ü—Í‚ª‚Ü‚¾ƒƒ“ƒhƒNƒTƒC
-		db.execSQL(execsql("“ú–{‚Åˆê”Ô–ÊÏ‚ª¬‚³‚¢“s“¹•{Œ§‚ÍH","ìŒ§","‰«“êŒ§","ŒQ”nŒ§","ƒTƒCƒ^ƒ}[!"));
-		db.execSQL(execsql("Xü‚ğ”­Œ©‚µ‚½l•¨‚ÍH","ƒŒƒ“ƒgƒQƒ“","ƒLƒ…ƒŠ[","ƒXƒPƒ‹ƒgƒ“","ƒ_ƒCƒiƒ}ƒCƒg"));
-		db.execSQL(execsql("bq‰€‹…ê‚ª‚ ‚é“s“¹•{Œ§‚ÍH","•ºŒÉŒ§","‘åã•{","‹“s•{","“‡ªŒ§"));
-		db.execSQL(execsql("ƒAƒ‹ƒtƒ@ƒxƒbƒg‚Ì—R—ˆ‚Æ‚È‚Á‚½‚à‚Ì‚ÍƒAƒ‹ƒtƒ@‚Æ‰½H","ƒx[ƒ^","ƒr[ƒ^","ƒxƒbƒh","ƒr[ƒY"));
-		db.execSQL(execsql("I Love You‚ğuŒ‚ªãY—í‚Å‚·‚Ëv‚Æ–ó‚µ‚½l•¨‚ÍH","‰Ä–ÚŸùÎ","•Ÿ‘ò—@‹g","â–{—³”n","ŠHì—´”V‰î"));
-		db.execSQL(execsql("Œõ‘¬‚ÌˆÙ–¼‚ğ‚¿d—Í‚ğ©İ‚É‘€‚é‚‹M‚È‚é—«‹Rm‚ÆŒ¾‚¦‚ÎH","ƒ‰ƒCƒgƒjƒ“ƒO","ƒGƒAƒŠƒX","ƒZƒŠƒX","ƒWƒFƒNƒg"));
-		
+		//execsql(å•é¡Œ,ç­”ãˆ,ãƒ€ãƒŸãƒ¼*3)ã‚’æ¸¡ã™
+		db.execSQL(execsql("æ—¥æœ¬ã§ä¸€ç•ªé¢ç©ãŒå°ã•ã„éƒ½é“åºœçœŒã¯ï¼Ÿ","é¦™å·çœŒ","æ²–ç¸„çœŒ","ç¾¤é¦¬çœŒ","ã‚µã‚¤ã‚¿ãƒãƒ¼!"));
+		db.execSQL(execsql("Xç·šã‚’ç™ºè¦‹ã—ãŸäººç‰©ã¯ï¼Ÿ","ãƒ¬ãƒ³ãƒˆã‚²ãƒ³","ã‚­ãƒ¥ãƒªãƒ¼","ã‚¹ã‚±ãƒ«ãƒˆãƒ³","ãƒ€ã‚¤ãƒŠãƒã‚¤ãƒˆ"));
+		db.execSQL(execsql("ç”²å­åœ’çƒå ´ãŒã‚ã‚‹éƒ½é“åºœçœŒã¯ï¼Ÿ","å…µåº«çœŒ","å¤§é˜ªåºœ","äº¬éƒ½åºœ","å³¶æ ¹çœŒ"));
+		db.execSQL(execsql("ã‚¢ãƒ«ãƒ•ã‚¡ãƒ™ãƒƒãƒˆã®ç”±æ¥ã¨ãªã£ãŸã‚‚ã®ã¯ã‚¢ãƒ«ãƒ•ã‚¡ã¨ä½•ï¼Ÿ","ãƒ™ãƒ¼ã‚¿","ãƒ“ãƒ¼ã‚¿","ãƒ™ãƒƒãƒ‰","ãƒ“ãƒ¼ã‚º"));
+		db.execSQL(execsql("I Love Youã‚’ã€ŒæœˆãŒç¶ºéº—ã§ã™ã­ã€ã¨è¨³ã—ãŸäººç‰©ã¯ï¼Ÿ","å¤ç›®æ¼±çŸ³","ç¦æ²¢è«­å‰","å‚æœ¬ç«œé¦¬","èŠ¥å·é¾ä¹‹ä»‹"));
+		db.execSQL(execsql("å…‰é€Ÿã®ç•°åã‚’æŒã¡é‡åŠ›ã‚’è‡ªåœ¨ã«æ“ã‚‹é«˜è²´ãªã‚‹å¥³æ€§é¨å£«ã¨è¨€ãˆã°ï¼Ÿ","ãƒ©ã‚¤ãƒˆãƒ‹ãƒ³ã‚°","ã‚¨ã‚¢ãƒªã‚¹","ã‚»ãƒªã‚¹","ã‚¸ã‚§ã‚¯ãƒˆ"));
 		
 		
 		
@@ -53,12 +51,12 @@ public class DBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-		// TODO ©“®¶¬‚³‚ê‚½ƒƒ\ƒbƒhEƒXƒ^ƒu
+		// TODO ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½ï¿½\ï¿½bï¿½hï¿½Eï¿½Xï¿½^ï¿½u
 
 	}
 	
-	//execSQLH‚Ìˆø”‚ğ•Ô‚·ƒƒ\ƒbƒh
-	public String execsql(String question,String answer,String dummy1,String dummy2,String dummy3){
+	//sqlæ–‡ã‚’è¿”ã™ãƒ¡ã‚½ãƒƒãƒ‰
+	private String execsql(String question,String answer,String dummy1,String dummy2,String dummy3){
 				
 		return "insert into "+tableName+" (question,answer,dummy1,dummy2,dummy3) values ('"+question+"','"+answer+"','"+dummy1+"', '"+dummy2+"','"+dummy3+"');";
 		
